@@ -34,7 +34,7 @@ $color-grey-dark: #474747 ;
     }
 
 // ★마우스 커버 포인트 변경 기능
-body{font-family:GenesisSans; font-size: 62.5%; padding: 3rem; cursor: url('../img/mouse.png'), auto; ;}
+body{font-family:GenesisSans; font-size: 62.5%; padding: 3rem; cursor: url('../img/mouse.png'), auto; }
 .nav{ // nav 활성화 버튼
     &-checkbox{display: none;}
     // 버튼
