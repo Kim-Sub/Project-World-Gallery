@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HONGKONG GALLERY</title>
+    <!-- 폰트아이콘 --><link rel="stylesheet" href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0' />
+    <!-- 폰트어썸 --><link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'>
+    <!-- 폰트 --><link href='https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&display=swap' rel="stylesheet">
+    <!-- 부트스트랩 캐러셀 --><link rel="canonical" href='https://getbootstrap.com/docs/5.2/examples/carousel/'>
+    <!-- 부트스트랩css --><link href='./css/bootstrap.css' rel="stylesheet">
+    <!-- 날씨api --><link rel="stylesheet" href='http://api.openweathermap.org/data/2.5/forecast?id=1819729&appid=90dda4a9ad533db48bad866d3d27fbea'>
+    <link rel="stylesheet" href='./css/style.css'>
+    <script src='./js/jquery-3.7.0.min.js'></script>
+    <!-- 카카오 맵api --><script type="text/javascript" src='//dapi.kakao.com/v2/maps/sdk.js?appkey=622516141a25e41a9107d05c098e4304'></script>
+    <script src='./js/script.js' defer></script>
+    <!-- 타이핑js --><script src='./js/typed.js'></script>
+</head>
+<body>
+    <nav class="nav">
+        <input type="checkbox" class="nav-checkbox" id="nav-toggle">
+        <label for="nav-toggle" class="nav-button">
+            <i class="fas fa-globe-americas" id="toggleButton"></i>
+        </label>
+<script>// 지구본 아이콘 토굴 기능
+  const toggleButton = document.getElementById("toggleButton");
+
+toggleButton.addEventListener("click", function() {
+  const currentColor = toggleButton.style.color;
+  const newColor = currentColor === "white" ? "crimson" : "white";
+  toggleButton.style.color = newColor;
+});
+</script>
+        <div class="nav-bg">&nbsp;</div>
+        <div class="nav-body">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" class="nav-link hongkong"><span></span>Hongkong</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link france"><span></span>France</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link hawai"><span></span>Hawai</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link india"><span></span>India</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <header>
+        <div id="logo-text">HongKong　 Gallery</div>
+        <div id="header-text">
+            <div id="header-text-main">All the pleasures and fantasies you can imagine.</div>
+            <div id="header-text-sub"> <span class="material-symbols-outlined">photo_camera</span>&nbsp; Copyright for @KimSub all rights reserved.</div>
+        </div>
+    </header>
+
+    <!-- 날씨 api 작성 방법
+    key : 9362faa2fd396cc8871c9a337fd71d86
+    홍콩id : 1819729
+    https://api.openweathermap.org/data/2.5/weather?id=1819729&appid=90dda4a9ad533db48bad866d3d27fbea&units=metric
+    -->
+    <!-- 1. 날씨 오픈api + 지도(map) 부분 --> 
+    <div id="api-content">
+      <div id="weatherBack">
+          <div id="weather"><!--  api왼쪽 -->
+            <div class="weather-top">
+              <h1>weather of HongKong</h1>
+              <h2></h2>
+            </div>
+            <div class="weather-bottom">
+              <div class="left">
+                <div class="ctemp">current temperature : </div>
+                <div class="clowtemp">lowest temperature : </div>
+                <div class="chighttemp">highest temperature : </div>
+              </div>
+              <div class="right">
+                <div class="cicon">climate : </div>
+              </div>
+            </div>
+      
+            <script>
+              $(function(){
+                  $.getJSON('https://api.openweathermap.org/data/2.5/forecast?id=1835848&appid=90dda4a9ad533db48bad866d3d27fbea&units=metric', function(data){
+                      console.log(data.list[0].main.temp)
+      
+                      const $temp=data.list[0].main.temp
+                      const $chighttemp=data.list[0].main.temp_max
+                      const $clowtemp=data.list[0].main.temp_min
+                      const $cicon=data.list[0].weather[0].icon
+                      const $h2 = data.list[0].dt_txt;
+                      $('.ctemp').append($temp)
+                      $('.chighttemp').append($chighttemp)
+                      $('.clowtemp').append($clowtemp)
+                      $(".cicon").append('<img src="https://openweathermap.org/img/wn/'+$cicon+'@2x.png" >' )
+                      // 오늘의 일자 타이핑 애니메이션
+                      $('.weather-top h2').typed({
+                      strings: [$h2],
+                      typeSpeed:50,
+                      backDelay:2500,
+                      loop:true,})
+                  })
+              })
+            </script>
+          </div>
+      </div>
+      <div id="worldMap"> <!-- api오른쪽 -->
+        <div id="map" style="width:100%;height:400px;"></div>
+        <script>
+          var mapContainer = document.getElementById('worldMap'), // 지도를 표시할 div 
+              mapOption = { 
+                  center: new kakao.maps.LatLng(37.4694801, 126.4325758), // 지도의 중심좌표
+                  level: 9 // 지도의 확대 레벨
+              };
+          // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+          var map = new kakao.maps.Map(mapContainer, mapOption); 
+        </script>
+      </div>
+    </div>
+
+
+
+
+    <!-- 2. 메인 - 메인 -->
+    <main> 
+        <div id="noticeBox"></div>
+<script> //노티스 타이핑 애니메이션
+        $('#noticeBox').typed({
+        strings:['Choose your preferred theme from the items, to explore more diverse spots.'],
+        typeSpeed:50,
+        backDelay:2500,
+        loop:true,})
+</script>
+<!-- 부트스트랩 3캐러셀 부분 -->
+    <div class="row">
+        <div class="col-lg-4">
+            <svg class="bd-placeholder-img rounded-circle" width="400" height="400" >
+              <rect width="100%" height="100%" fill="#777"/>
+              <image href="./img/citytour.jpg" width="400" height="400"/>
+            </svg>
+            <h2 class="fw-bolder"><span class="material-symbols-outlined csspan">
+              hiking
+              </span>City Tour</h2>
+            <p>Hong Kong's urban areas are dense and compact. Take a tram that swims through the building forest and keep an eye on the busy daily life of the citizens.</p>
+            <p><a class="btn btn-secondary" id="citytour-btn" href="#citytour">View photos &raquo;</a></p>
+          </div><!-- /.col-lg-4 -->
+
+        <div class="col-lg-4">
+            <svg class="bd-placeholder-img rounded-circle" width="400" height="400" >
+              <rect width="100%" height="100%" fill="#777"/>
+              <image href="./img/hotel.jpg" width="400" height="400"/>
+            </svg>
+            <h2 class="fw-bolder"><span class="material-symbols-outlined csspan">
+              bathtub
+              </span>Hotel</h2>
+            <p>Hong Kong has many world-famous hotels, all of which offer good value for money. Enjoy a complete vacation in a 5-star hotel.</p>
+            <p><a class="btn btn-secondary" id="hotel-btn" href="#hotel">View photos &raquo;</a></p>
+          </div><!-- /.col-lg-4 -->
+
+        <div class="col-lg-4">
+            <svg class="bd-placeholder-img rounded-circle" width="400" height="400" >
+              <rect width="100%" height="100%" fill="#777"/>
+              <image href="./img/drink.jpg" width="400" height="400"/>
+            </svg>
+            <h2 class="fw-bolder"><span class="material-symbols-outlined csspan">
+              sports_bar
+              </span>Drinking</h2>
+            <p>In particular, Lan Kwai Fong is a wonderful place. People from all over the world gather in one block to enjoy this moment.</p>
+            <p><a class="btn btn-secondary" id="drinking-btn" href="#drinking">View photos &raquo;</a></p>
+          </div><!-- /.col-lg-4 -->
+      </div>
+<!-- 갤러리 - 시티투어--> 
+<div class="album py-5 bg-light" id="citytour">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/citytour_01.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">street tram</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">34 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/citytour_02.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">dense forest of buildings</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">167 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/citytour_03.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">Busy road with various transportation</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">68 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/citytour_04.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">hong kong taxi</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">72 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/citytour_05.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">downtown street market</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">59 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/citytour_06.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">crowd in the city</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">37 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+<!-- 갤러리 - 호텔 -->
+<div class="album py-5 bg-light" id="hotel">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/hotel_01.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">Ovolo Design Hotel</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">351 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/hotel_02.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">social space</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">268 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/hotel_03.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">Unlimited Cocktail Bar</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">116 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/hotel_04.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">Rooftop Seminar Room</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">87 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/hotel_05.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">Western Hotel</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">67 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/hotel_06.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">good value hotel</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">112 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+<!-- 갤러리 - 드링크 -->
+<div class="album py-5 bg-light" id="drinking">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/drinking_01.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">10-Shot $198 Challenge</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">351 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/drinking_02.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">Beer always in your pocket</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">268 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/drinking_03.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">beer anytime, anywhere</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">116 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/drinking_04.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">Dancing on the street like a fool</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">87 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/drinking_05.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">This is Lan Kwai Fong's Club</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">67 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+        <div class="col"> <!-- 갤러리 슬롯 시작 -->
+            <div class="card shadow-sm">
+              <img src="./img/drinking_06.jpg" alt="Your Image" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">Hong Kong people's charming conviviality</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Rcommendation</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">this place is Soso</button>
+                  </div>
+                  <small class="text-muted">112 people voted</small>
+                </div>
+              </div>
+            </div>
+          </div> <!-- 갤러리 슬롯 종료 -->
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+  <script>  // 버튼 클릭에 따른 갤러리 노출
+    const cityTourBtn = document.getElementById("citytour-btn");
+    const hotelBtn = document.getElementById("hotel-btn");
+    const drinkingBtn = document.getElementById("drinking-btn");
+    
+    const cityTourSection = document.getElementById("citytour");
+    const hotelSection = document.getElementById("hotel");
+    const drinkingSection = document.getElementById("drinking");
+
+    cityTourBtn.addEventListener("click", function() {
+        cityTourSection.style.display = "block";
+        hotelSection.style.display = "none";
+        drinkingSection.style.display = "none";
+    });
+    hotelBtn.addEventListener("click", function() {
+        cityTourSection.style.display = "none";
+        hotelSection.style.display = "block";
+        drinkingSection.style.display = "none";
+    });
+    drinkingBtn.addEventListener("click", function() {
+        cityTourSection.style.display = "none";
+        hotelSection.style.display = "none";
+        drinkingSection.style.display = "block";
+    });
+</script>
+    </main>
+
+    <footer>
+        <div><a class="btn btn-secondary" id="gotoThema" href="#noticeBox">go to thema &raquo;</a></div>
+    </footer>
+<script> // go to thema 버튼 클릭시 상단으로
+    const gotoThema = document.getElementById("gotoThema");
+  
+    gotoThema.addEventListener("click", function(){
+      cityTourSection.classList.add("fade-out");
+      hotelSection.classList.add("fade-out");
+      drinkingSection.classList.add("fade-out");
+  
+      setTimeout(function() {
+        cityTourSection.style.display = "none";
+        hotelSection.style.display = "none";
+        drinkingSection.style.display = "none";
+      }, 500)
+      cityTourSection.classList.remove("fade-out");
+      hotelSection.classList.remove("fade-out");
+      drinkingSection.classList.remove("fade-out");;
+    });
+  </script>
+</body>
+</html>
